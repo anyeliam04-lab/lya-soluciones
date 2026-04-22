@@ -1,75 +1,189 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Demos Pro | LYA System</title>
-<script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Demos | Agencia Digital Elite</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080808;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .netflix-card {
+            background: #141414;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .netflix-card:hover {
+            transform: scale(1.05);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            z-index: 10;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #000000;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #e5e5e5;
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1eb956;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% -20%, #1a1a1a 0%, #080808 70%);
+        }
+
+        .reveal { opacity: 0; }
+    </style>
 </head>
+<body class="hero-gradient antialiased">
 
-<body class="bg-black text-white">
+    <nav class="fixed w-full z-50 bg-[#080808]/80 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-black tracking-tighter uppercase">
+                Digital<span class="text-blue-500">Studio</span>
+            </div>
+            <a href="https://wa.me/TU_NUMERO?text=Hola,%20me%20gustaría%20una%20consultoría%20para%20mi%20negocio" class="text-xs font-bold uppercase tracking-widest border-b border-white pb-1 hover:text-blue-500 hover:border-blue-500 transition">Contacto Directo</a>
+        </div>
+    </nav>
 
-<!-- HERO -->
-<section class="text-center py-16 px-6">
-<h1 class="text-4xl md:text-6xl font-black">
-CATÁLOGO DE <span class="text-blue-500">DEMOS</span>
-</h1>
-<p class="text-gray-400 mt-4">
-Elige cómo se vería tu negocio optimizado para vender más
-</p>
-</section>
+    <header class="pt-40 pb-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="reveal text-5xl md:text-8xl font-black mb-6 tracking-tight leading-none">
+                Elige el diseño que <br><span class="opacity-40">escalará tu negocio.</span>
+            </h1>
+            <p class="reveal text-gray-400 text-lg md:text-xl max-w-2xl mx-auto font-light mb-10">
+                Selecciona una interfaz de nuestra colección exclusiva y llévala a producción en tiempo récord.
+            </p>
+        </div>
+    </header>
 
-<!-- GRID DEMOS -->
-<section class="px-6 pb-20">
+    <main class="max-w-7xl mx-auto px-6 pb-32">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="reveal netflix-card rounded-xl overflow-hidden group">
+                <div class="relative aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=800" alt="Demo Barbería" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-white text-xs font-bold tracking-widest uppercase border border-white px-4 py-2">Vista Previa</span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h2 class="text-2xl font-bold mb-2">The Barber Club</h2>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed">Estilo minimalista oscuro para servicios de lujo. Optimizado para reservas.</p>
+                    <div class="flex flex-col gap-3">
+                        <a href="demos/barberia.html" class="btn-primary w-full py-3 rounded-lg text-center text-xs font-black uppercase tracking-widest">Ver Demo</a>
+                        <a href="https://wa.me/TU_NUMERO?text=Quiero%20el%20diseño%20de%20Barbería" class="btn-whatsapp w-full py-3 rounded-lg text-center text-xs font-black uppercase tracking-widest">Quiero este diseño</a>
+                    </div>
+                </div>
+            </div>
 
-<div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div class="reveal netflix-card rounded-xl overflow-hidden group">
+                <div class="relative aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800" alt="Demo Moda" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-white text-xs font-bold tracking-widest uppercase border border-white px-4 py-2">Vista Previa</span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h2 class="text-2xl font-bold mb-2">Nomad Studio</h2>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed">Inspirado en Zara. Estética editorial de alto impacto para marcas de ropa.</p>
+                    <div class="flex flex-col gap-3">
+                        <a href="demos/nomad.html" class="btn-primary w-full py-3 rounded-lg text-center text-xs font-black uppercase tracking-widest">Ver Demo</a>
+                        <a href="https://wa.me/TU_NUMERO?text=Quiero%20el%20diseño%20de%20Moda%20Nomad" class="btn-whatsapp w-full py-3 rounded-lg text-center text-xs font-black uppercase tracking-widest">Quiero este diseño</a>
+                    </div>
+                </div>
+            </div>
 
-<!-- DEMO EXE -->
-<a href="exe.html" class="bg-white/5 rounded-xl overflow-hidden hover:scale-105 transition block">
-<div class="p-6">
-<h2 class="text-xl font-bold">🔥 Demo EXE</h2>
-<p class="text-gray-400 text-sm mt-2">Sistema de ventas universal</p>
-</div>
-</a>
+            <div class="reveal netflix-card rounded-xl overflow-hidden group">
+                <div class="relative aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800" alt="Demo Corporativa" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-white text-xs font-bold tracking-widest uppercase border border-white px-4 py-2">Vista Previa</span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h2 class="text-2xl font-bold mb-2">Corporate EXE</h2>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed">Diseño SaaS moderno. Ideal para agencias, consultoras y empresas Tech.</p>
+                    <div class="flex flex-col gap-3">
+                        <a href="demos/demo-exe.html" class="btn-primary w-full py-3 rounded-lg text-center text-xs font-black uppercase tracking-widest">Ver Demo</a>
+                        <a href="https://wa.me/TU_NUMERO?text=Quiero%20el%20diseño%20Corporativo%20EXE" class="btn-whatsapp w-full py-3 rounded-lg text-center text-xs font-black uppercase tracking-widest">Quiero este diseño</a>
+                    </div>
+                </div>
+            </div>
 
-<!-- BARBERIA -->
-<a href="barberia-elite.html" class="bg-white/5 rounded-xl overflow-hidden hover:scale-105 transition block">
-<div class="p-6">
-<h2 class="text-xl font-bold">💈 Barbería Elite</h2>
-<p class="text-gray-400 text-sm mt-2">Citas + estilo premium</p>
-</div>
-</a>
+        </div>
+    </main>
 
-<!-- RESTAURANTE -->
-<a href="restaurante.html" class="bg-white/5 rounded-xl overflow-hidden hover:scale-105 transition block">
-<div class="p-6">
-<h2 class="text-xl font-bold">🍔 Restaurante Pro</h2>
-<p class="text-gray-400 text-sm mt-2">Menú + reservas WhatsApp</p>
-</div>
-</a>
+    <footer class="py-20 border-t border-white/5 bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h3 class="text-lg font-bold mb-6 tracking-widest uppercase">DigitalStudio / 2026</h3>
+            <p class="text-gray-600 text-sm mb-10 max-w-md mx-auto italic">"El diseño no es solo lo que se ve, es cómo funciona la venta."</p>
+            <div class="flex justify-center gap-8 text-[10px] font-bold uppercase tracking-[0.3em] text-gray-500">
+                <a href="#" class="hover:text-white transition">Instagram</a>
+                <a href="#" class="hover:text-white transition">LinkedIn</a>
+                <a href="https://wa.me/TU_NUMERO" class="hover:text-white transition">WhatsApp</a>
+            </div>
+        </div>
+    </footer>
 
-<!-- INMOBILIARIA -->
-<a href="inmobiliaria.html" class="bg-white/5 rounded-xl overflow-hidden hover:scale-105 transition block">
-<div class="p-6">
-<h2 class="text-xl font-bold">🏢 Inmobiliaria</h2>
-<p class="text-gray-400 text-sm mt-2">Leads de alto valor</p>
-</div>
-</a>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
 
-</div>
+        // Animación de entrada suave
+        gsap.to(".reveal", {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power4.out",
+            scrollTrigger: {
+                trigger: ".reveal",
+                start: "top 90%",
+            }
+        });
 
-</section>
-
-<!-- CTA -->
-<section class="text-center py-20">
-<h2 class="text-3xl font-bold mb-6">¿Quieres uno así para tu negocio?</h2>
-
-<a href="https://wa.me/525520610872?text=Quiero%20una%20pagina%20como%20estos%20demos"
-class="bg-blue-500 text-white px-8 py-4 rounded-xl font-bold">
-Hablar por WhatsApp
-</a>
-
-</section>
-
+        // Efecto parallax sutil en las tarjetas al hacer scroll
+        gsap.from(".netflix-card", {
+            opacity: 0,
+            scale: 0.9,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: "main",
+                start: "top 80%",
+            }
+        });
+    </script>
 </body>
 </html>
+
