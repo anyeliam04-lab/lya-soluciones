@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>LYA Digital | Ingeniería de Ventas High-Ticket & CRO Elite</title>
+    
+    <meta name="description" content="Transformamos sitios web en activos de facturación masiva. Especialistas en embudos de venta y CRO para el mercado High-Ticket.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        #reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    z-index: 1002;
+    transition: width 0.1s ease-out;
+}
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        :root { --accent: #3b82f6; --bg: #030303; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: #fff; 
+            overflow-x: hidden; 
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior-y: none;
+        }
+
+        /* CURSOR SYSTEM */
+        #cursor { width: 10px; height: 10px; background: white; border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.2s ease; }
+        #cursor-blur { width: 400px; height: 400px; background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%); position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); }
+        #progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 4px; background: linear-gradient(90deg, #3b82f6, #60a5fa); z-index: 1001; }
+
+        /* UI ELEMENTS */
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .text-gradient { background: linear-gradient(135deg, #fff 30%, #3b82f6 100%); -webkit-background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .btn-glow { position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+        .btn-glow:hover { box-shadow: 0 0 40px rgba(59, 130, 246, 0.5); transform: translateY(-2px); }
+        
+        /* 3D & CARDS */
+        .tilt-card { transition: transform 0.1s ease-out; transform-style: preserve-3d; }
+        .spotlight { position: relative; }
+        .spotlight::before { content: ""; position: absolute; inset: 0; background: radial-gradient(600px circle at var(--x) var(--y), rgba(255,255,255,0.06), transparent 40%); z-index: 1; pointer-events: none; }
+        
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .marquee-content { display: flex; width: 200%; animation: scroll 30s linear infinite; }
+        .floating-wa {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    border-radius: 50%;
+
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4),
+                0 0 0 0 rgba(37, 211, 102, 0.7);
+
+    animation: pulseWA 2s infinite;
+    transition: all 0.3s ease;
+}
+
+.floating-wa:hover {
+    transform: scale(1.15) rotate(8deg);
+    box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6);
+}
+
+.floating-wa svg {
+    width: 28px;
+    height: 28px;
+}
+
+@keyframes pulseWA {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+    70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.3; }
+        .reveal { opacity: 0; transform: translateY(40px); }
+
+        /* SALES POPUPS & NOTIFS */
+        .sales-popup { position: fixed; bottom: 100px; left: 30px; z-index: 99; transform: translateX(-150%); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        .sales-popup.active { transform: translateX(0); }
+        .ios-notif { animation: iosIn 0.5s cubic-bezier(0.16, 1, 0.3, 1); margin-bottom: 8px; }
+        @keyframes iosIn { from { opacity: 0; transform: translateY(20px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* MODO CORPORATIVO - GLITCH EFFECT */
+        .corporate-mode { 
+            border: 1px solid #3b82f6 !important; 
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4); 
+            background: rgba(59, 130, 246, 0.05) !important;
+            animation: glitch-border 0.2s infinite alternate;
+        }
+        @keyframes glitch-border { from { border-color: #3b82f6; } to { border-color: #ffffff; } }
+
+        .loading-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.9); z-index: 60; border-radius: 40px; justify-content: center; align-items: center; flex-direction: column; }
+        .spinner { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #3b82f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+   /* Efecto de "Carga de Datos" en el cursor cuando pasa por el botón de pago */
+.btn-glow:hover::after {
+    content: " [SISTEMA LISTO]";
+    font-size: 8px;
+    letter-spacing: 2px;
+    vertical-align: middle;
+}
+
+/* Mejora de contraste para el mercado High-Ticket */
+input::placeholder {
+    color: rgba(255,255,255,0.2) !important;
+    font-style: italic;
+}
+/* Botón WhatsApp Glow - No rompe estructura */
+.whatsapp-glow {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    background: #030303;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    display: flex;
+    items-center;
+    text-decoration: none;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(10px);
+}
+
+.whatsapp-glow:hover {
+    transform: translateY(-5px);
+    border-color: #3b82f6;
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+    color: #3b82f6;
+}
+
+.whatsapp-glow svg {
+    width: 18px;
+    height: 18px;
+}
+
+ </style>
+</head>
+<body class="antialiased">
+
+<div id="reading-progress"></div>
+<div id="progress-bar"></div>
+<div id="cursor"></div>
+<div id="cursor-blur"></div>
+<div id="canvas-container"></div>
+
+<div id="sales-notifier" class="sales-popup glass px-6 py-4 rounded-2xl flex items-center gap-4 border-l-4 border-blue-500 shadow-2xl">
+    <div class="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center">
+        <i data-lucide="trending-up" class="text-blue-500" size="20"></i>
+    </div>
+    <div>
+        <p id="sales-text" class="text-[10px] font-black uppercase italic tracking-widest text-gray-400">Nuevo Cliente</p>
+        <p id="sales-info" class="text-sm font-bold">Inversión de $800 USD</p>
+        <p id="sales-time" class="text-[8px] text-blue-500 font-bold uppercase mt-1">Hace 2 min</p>
+    </div>
+</div>
+
+<a href="https://wa.me/525520610872?text=Hola%20LYA%20ARCHIVE" 
+   target="_blank"
+   class="floating-wa">
+    <i data-lucide="message-circle" color="white" size="28"></i>
+</a>
+
+<nav class="fixed w-full z-[100] px-8 py-5 glass border-b border-white/5 flex justify-between items-center">
+    <div class="text-2xl font-black italic tracking-tighter uppercase">LYA<span class="text-blue-500">DIGITAL</span></div>
+    <div class="hidden lg:flex gap-10 text-[11px] font-bold uppercase tracking-[0.2em]">
+        <a href="#proyectos" class="hover:text-blue-400 transition-colors">Casos de Éxito</a>
+        <a href="#metodo" class="hover:text-blue-400 transition-colors">Sistema</a>
+        <a href="#entregables" class="hover:text-blue-400 transition-colors">Entregables</a>
+        <a href="#faq" class="hover:text-blue-400 transition-colors">Garantía</a>
+        <div class="flex items-center gap-2 text-green-500">
+            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping"></span>
+            <span id="live-users" class="font-black text-[9px]">12 PERSONAS VIENDO</span>
+        </div>
+    </div>
+    <div class="flex items-center gap-6">
+        <div id="countdown" class="hidden md:flex flex-col items-end">
+            <span class="text-[8px] font-bold text-blue-500 uppercase tracking-widest">Oferta expira en:</span>
+            <span class="text-xs font-mono font-black" id="timer">02:30:00</span>
+        </div>
+        <a href="#auditoria" class="bg-blue-600 px-7 py-3 rounded-full text-[10px] font-black uppercase italic btn-glow">Auditoría Elite</a>
+    </div>
+</nav>
+
+<section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative pt-32 pb-20 overflow-hidden">
+<div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+    <div class="absolute inset-0 bg-[#030303]/70 z-[1]"></div>
+    
+    <video 
+        autoplay 
+        muted 
+        loop 
+        playsinline 
+        poster="https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=1600"
+        class="w-full h-full object-cover opacity-[0.12] grayscale brightness-50 contrast-125">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-web-developer-working-on-source-code-for-new-project-44498-large.mp4" type="video/mp4">
+        </video>
+</div>
+
+
+    <div class="max-w-7xl z-10 grid lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 text-left">
+            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-600/10 border border-blue-500/20 text-blue-400 text-[10px] font-black tracking-[0.3em] mb-6 uppercase italic">
+                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> MÉXICO'S #1 CRO COLLECTIVE
+            </div>
+            <h1 id="hero-title" class="text-5xl md:text-[90px] font-black mb-6 leading-[0.85] tracking-tighter italic uppercase">
+                FACTURAR NO ES <br> <span class="text-gradient">SUERTE. ES ING.</span>
+            </h1>
+            <p id="hero-desc" class="text-gray-400 text-lg md:text-xl max-w-2xl mb-10 font-medium italic leading-relaxed">
+                Dejamos de "diseñar sitios bonitos" para <span class="text-white font-bold">construir máquinas de guerra comercial</span>. Si tu web no paga tu estilo de vida, es un gasto, no un activo.
+            </p>
+            <div class="flex flex-wrap gap-6 items-center mb-12">
+                <button onclick="document.getElementById('auditoria').scrollIntoView()" class="bg-white text-black px-10 py-6 rounded-2xl font-black text-lg uppercase btn-glow magnetic flex items-center gap-4">
+                    Escalar mi Negocio <i data-lucide="arrow-right" size="20"></i>
+                </button>
+                <div class="flex flex-col gap-2">
+                    <div class="flex -space-x-3">
+                        <img src="https://i.pravatar.cc/100?u=1" class="w-10 h-10 rounded-full border-2 border-black">
+                        <img src="https://i.pravatar.cc/100?u=2" class="w-10 h-10 rounded-full border-2 border-black">
+                        <img src="https://i.pravatar.cc/100?u=3" class="w-10 h-10 rounded-full border-2 border-black">
+                        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold border-2 border-black">+120</div>
+                    </div>
+                    <p class="text-[9px] font-black uppercase tracking-widest text-gray-500 italic">+$4.2M USD Generados para clientes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-5 relative reveal">
+            <div class="glass p-2 rounded-[50px] tilt-card rotate-3 shadow-2xl relative z-10 overflow-hidden w-[310px] md:w-[350px] mx-auto border-4 border-white/10">
+                <div class="bg-black h-[580px] w-full rounded-[42px] overflow-hidden relative flex flex-col">
+                    <div class="h-6 w-32 bg-black absolute top-0 left-1/2 -translate-x-1/2 z-50 rounded-b-2xl border-x border-b border-white/5"></div>
+                    <div class="bg-neutral-900 h-12 flex items-center justify-between px-8 pt-4">
+                        <span class="text-[10px] font-bold">9:41</span>
+                        <div class="flex gap-1"><i data-lucide="signal" size="10"></i><i data-lucide="wifi" size="10"></i><i data-lucide="battery" size="10"></i></div>
+                    </div>
+                    <div id="phone-feed" class="phone-screen flex-1 overflow-y-auto p-4 space-y-3 bg-[#0a0a0a]">
+                        <div class="ios-notif bg-white/5 border border-white/10 p-3 rounded-2xl">
+                            <p class="text-[8px] uppercase font-black text-blue-500">Sistema Iniciado</p>
+                            <p class="text-[10px] font-medium italic">Esperando tráfico calificado...</p>
+                        </div>
+                    </div>
+                    <div class="p-4 glass border-t border-white/5 flex justify-around">
+                        <i data-lucide="home" class="text-blue-500" size="18"></i>
+                        <i data-lucide="pie-chart" class="text-gray-600" size="18"></i>
+                        <i data-lucide="zap" class="text-gray-600" size="18"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute -top-6 -right-6 glass p-6 rounded-3xl z-20 animate-bounce shadow-2xl border border-blue-500/20">
+                <p class="text-blue-500 font-black text-2xl italic">+320%</p>
+                <p class="text-[8px] font-bold uppercase tracking-widest">ROI Mensual</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="stack" class="py-10 relative z-10">
+    <div class="max-w-7xl mx-auto px-6 border-t border-white/5 pt-10">
+        <p class="text-center text-[9px] font-black uppercase tracking-[0.5em] text-gray-500 mb-10 italic">Infraestructura de Clase Mundial</p>
+        <div class="flex flex-wrap justify-center items-center gap-12 opacity-40 grayscale hover:grayscale-0 transition-all">
+            <span class="text-xl font-black italic">METRIX</span>
+            <span class="text-xl font-black italic">VERCEL</span>
+            <span class="text-xl font-black italic">STRIPE</span>
+            <span class="text-xl font-black italic">AWS</span>
+            <span class="text-xl font-black italic">GSAP</span>
+        </div>
+    </div>
+</section>
+
+<div class="py-20 border-y border-white/5 bg-white/[0.01] overflow-hidden relative z-10 spotlight">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16 text-center md:text-left">
+        <div>
+            <h3 class="text-4xl font-black italic">+$12M</h3>
+            <p class="text-[10px] text-gray-500 uppercase font-black tracking-widest">Inversión Ad-Spend Gestionada</p>
+        </div>
+        <div>
+            <h3 class="text-4xl font-black italic">+85k</h3>
+            <p class="text-[10px] text-gray-500 uppercase font-black tracking-widest">Leads High-Ticket Generados</p>
+        </div>
+        <div>
+            <h3 class="text-4xl font-black italic">14</h3>
+            <p class="text-[10px] text-gray-500 uppercase font-black tracking-widest">Países con Operaciones Activas</p>
+        </div>
+        <div class="flex items-center gap-4 justify-center md:justify-end">
+            <div class="bg-white/5 p-3 rounded-xl border border-white/10"><i data-lucide="shield-check" class="text-blue-500"></i></div>
+            <div class="bg-white/5 p-3 rounded-xl border border-white/10"><i data-lucide="award" class="text-blue-500"></i></div>
+        </div>
+    </div>
+    <div class="marquee-content gap-24 opacity-30">
+        <span class="text-3xl font-black italic tracking-tighter">FORBES MÉXICO</span>
+        <span class="text-3xl font-black italic tracking-tighter">ENTREPRENEUR</span>
+        <span class="text-3xl font-black italic tracking-tighter">EXPANSIÓN</span>
+        <span class="text-3xl font-black italic tracking-tighter">TECH CRUNCH</span>
+        <span class="text-3xl font-black italic tracking-tighter">FORBES MÉXICO</span>
+        <span class="text-3xl font-black italic tracking-tighter">ENTREPRENEUR</span>
+    </div>
+</div>
+
+<section id="metodo" class="py-32 px-6 relative z-10 spotlight">
+    <div class="max-w-6xl mx-auto text-center">
+        <h2 class="text-4xl md:text-7xl font-black uppercase italic mb-16 tracking-tighter leading-none">EL SISTEMA DE <span class="text-blue-500">EXTRACCIÓN</span> DE CAPITAL</h2>
+        <div class="glass p-4 rounded-[50px] shadow-2xl reveal relative group mb-12">
+            <div class="aspect-video rounded-[40px] overflow-hidden bg-neutral-900 border border-white/10 relative">
+<div class="w-full h-full relative overflow-hidden">
+
+    <div id="netflix-slider" class="flex h-full transition-transform duration-700">
+
+        <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1200" class="w-full h-full object-cover flex-shrink-0">
+        
+        <img src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=1200" class="w-full h-full object-cover flex-shrink-0">
+        
+        <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1200" class="w-full h-full object-cover flex-shrink-0">
+
+    </div>
+
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+
+</div>
+</video>
+
+<!-- Overlay elegante -->
+<div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+
+<!-- Botón play falso (UX pro) -->
+<div class="absolute inset-0 flex items-center justify-center">
+    <div class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+        <div class="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1"></div>
+    </div>
+</div>
+            </div>
+        </div>
+        <div class="flex flex-col items-center gap-6">
+            <p class="text-gray-400 italic text-lg max-w-2xl">“Este video revela la arquitectura exacta que usamos para escalar de $0 a $100k/mes sin depender de la suerte.”</p>
+            <a href="#auditoria" class="bg-blue-600/10 text-blue-400 border border-blue-500/30 px-8 py-4 rounded-2xl font-black uppercase italic text-xs tracking-widest hover:bg-blue-600 hover:text-white transition-all">Ver Caso de Estudio Completo</a>
+        </div>
+    </div>
+</section>
+
+<section id="entregables" class="py-32 px-6 relative z-10">
+    <div class="max-w-7xl mx-auto text-center">
+        <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-gray-400 text-[9px] font-black tracking-[0.3em] mb-12 uppercase italic">DESPLIEGUE TÁCTICO</div>
+        <h2 class="text-5xl md:text-7xl font-black uppercase italic mb-20 tracking-tighter leading-none">¿QUÉ COMPRAS <br><span class="text-blue-500">REALMENTE?</span></h2>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="glass p-12 rounded-[50px] border-white/5 text-left flex flex-col h-full reveal">
+                <div class="mb-8 bg-blue-600/20 w-12 h-12 rounded-2xl flex items-center justify-center">
+                    <i data-lucide="zap" class="text-blue-500"></i>
+                </div>
+                <h4 class="text-2xl font-black italic uppercase mb-4 tracking-tighter">SISTEMA CORE</h4>
+                <p class="text-gray-500 text-sm italic mb-8">Arquitectura básica de conversión para negocios que necesitan validación inmediata.</p>
+                <div class="mt-auto space-y-3">
+                    <div class="flex items-center gap-3 text-[10px] font-bold uppercase italic text-blue-400"><i data-lucide="check" size="14"></i> High-Conv LP</div>
+                    <div class="flex items-center gap-3 text-[10px] font-bold uppercase italic text-blue-400"><i data-lucide="check" size="14"></i> CRM Sync</div>
+                </div>
+            </div>
+
+            <div class="glass p-12 rounded-[50px] border-blue-500/30 text-left flex flex-col h-full reveal relative overflow-hidden">
+                <div class="absolute top-6 right-6 text-[8px] font-black bg-blue-600 px-3 py-1 rounded-full italic uppercase">Más Popular</div>
+                <div class="mb-8 bg-blue-600 w-12 h-12 rounded-2xl flex items-center justify-center">
+                    <i data-lucide="rocket" class="text-white"></i>
+                </div>
+                <h4 class="text-2xl font-black italic uppercase mb-4 tracking-tighter">ELITE ENGINE</h4>
+                <p class="text-gray-400 text-sm italic mb-8">Optimización completa de embudo con copywriting agresivo y psicología de ventas.</p>
+                <div class="mt-auto space-y-3">
+                    <div class="flex items-center gap-3 text-[10px] font-bold uppercase italic text-blue-400"><i data-lucide="check" size="14"></i> Copywriting Avanzado</div>
+                    <div class="flex items-center gap-3 text-[10px] font-bold uppercase italic text-blue-400"><i data-lucide="check" size="14"></i> Vetting de Leads</div>
+                </div>
+            </div>
+
+            <div class="glass p-12 rounded-[50px] border-white/5 text-left flex flex-col h-full reveal">
+                <div class="mb-8 bg-white/10 w-12 h-12 rounded-2xl flex items-center justify-center">
+                    <i data-lucide="shield-check" class="text-white"></i>
+                </div>
+                <h4 class="text-2xl font-black italic uppercase mb-4 tracking-tighter">FULL ARCHIVE</h4>
+                <p class="text-gray-500 text-sm italic mb-8">Ecosistema digital total para escalar a 6 cifras mensuales de forma predecible.</p>
+                <div class="mt-auto space-y-3">
+                    <div class="flex items-center gap-3 text-[10px] font-bold uppercase italic text-blue-400"><i data-lucide="check" size="14"></i> Automatización Total</div>
+                    <div class="flex items-center gap-3 text-[10px] font-bold uppercase italic text-blue-400"><i data-lucide="check" size="14"></i> Soporte VIP 24/7</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="proyectos" class="py-32 px-6 relative z-10">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+            <div class="max-w-2xl text-left">
+                <h2 class="text-5xl md:text-7xl font-black uppercase italic leading-none tracking-tighter mb-6">PRUEBAS, <br><span class="text-blue-500">NO PROMESAS.</span></h2>
+                <p class="text-gray-400 italic">Casos reales de negocios en México que dejaron de "intentar" y empezaron a dominar.</p>
+            </div>
+            <div class="text-right">
+                <p class="text-5xl font-black italic text-gradient">94%</p>
+                <p class="text-[10px] font-black uppercase tracking-widest text-gray-500">Tasa de Retención de Clientes</p>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="case-study-card glass rounded-[40px] overflow-hidden reveal group tilt-card">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800" class="w-full h-full object-cover case-img grayscale group-hover:grayscale-0" alt="Real Estate">
+                    <div class="absolute top-6 left-6 bg-blue-600 px-4 py-2 rounded-xl text-[10px] font-black italic uppercase">Inmobiliaria</div>
+                </div>
+                <div class="p-8 text-left">
+                    <h4 class="text-xl font-black uppercase italic mb-4">Alfa Inmobiliaria</h4>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase italic">Problema</span>
+                            <span class="text-[10px] font-black text-red-400 uppercase italic">Leads Basura</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase italic">Solución</span>
+                            <span class="text-[10px] font-black text-blue-400 uppercase italic">Vetting Automático</span>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 p-6 rounded-2xl text-center">
+                        <p class="text-3xl font-black italic text-green-500">+180%</p>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-gray-500">Cierre de ventas calificado</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-study-card glass rounded-[40px] overflow-hidden reveal group tilt-card" style="transition-delay: 0.1s;">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?q=80&w=800" class="w-full h-full object-cover case-img grayscale group-hover:grayscale-0" alt="Fintech">
+                    <div class="absolute top-6 left-6 bg-blue-600 px-4 py-2 rounded-xl text-[10px] font-black italic uppercase">Fintech</div>
+                </div>
+                <div class="p-8 text-left">
+                    <h4 class="text-xl font-black uppercase italic mb-4">Nexus Capital</h4>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase italic">Problema</span>
+                            <span class="text-[10px] font-black text-red-400 uppercase italic">CAC Elevado</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase italic">Solución</span>
+                            <span class="text-[10px] font-black text-blue-400 uppercase italic">Optimización CRO</span>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 p-6 rounded-2xl text-center">
+                        <p class="text-3xl font-black italic text-green-500">-65%</p>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-gray-500">Costo por adquisición</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-study-card glass rounded-[40px] overflow-hidden reveal group tilt-card" style="transition-delay: 0.2s;">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800" class="w-full h-full object-cover case-img grayscale group-hover:grayscale-0" alt="SaaS">
+                    <div class="absolute top-6 left-6 bg-blue-600 px-4 py-2 rounded-xl text-[10px] font-black italic uppercase">SaaS Premium</div>
+                </div>
+                <div class="p-8 text-left">
+                    <h4 class="text-xl font-black uppercase italic mb-4">UltraServe Systems</h4>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase italic">Problema</span>
+                            <span class="text-[10px] font-black text-red-400 uppercase italic">Churn Rate Alto</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase italic">Solución</span>
+                            <span class="text-[10px] font-black text-blue-400 uppercase italic">UX Frictionless</span>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 p-6 rounded-2xl text-center">
+                        <p class="text-3xl font-black italic text-green-500">$2.1M</p>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-gray-500">Facturación Extra YTD</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="faq" class="py-32 px-6 relative z-10">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-4xl md:text-6xl font-black uppercase italic mb-16 tracking-tighter leading-none text-center">F.A.Q. <br><span class="text-blue-500">SISTÉMICO</span></h2>
+        <div class="space-y-4">
+            <div class="glass p-8 rounded-3xl border-white/5">
+                <p class="text-xs font-black uppercase italic text-blue-500 mb-2">¿En cuánto tiempo veré resultados?</p>
+                <p class="text-gray-400 text-sm italic">Nuestros sistemas se despliegan en 14 días. Las métricas de conversión suelen mejorar en las primeras 48 horas tras el lanzamiento.</p>
+            </div>
+            <div class="glass p-8 rounded-3xl border-white/5">
+                <p class="text-xs font-black uppercase italic text-blue-500 mb-2">¿Trabajan con cualquier negocio?</p>
+                <p class="text-gray-400 text-sm italic">No. Solo aceptamos negocios que facturen mínimo $2k USD/mes y tengan un producto validado que podamos escalar.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="auditoria" class="py-40 px-6 relative z-10">
+    <div class="max-w-6xl mx-auto glass p-12 md:p-24 rounded-[70px] border-blue-500/30 relative overflow-hidden spotlight">
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+            <div class="reveal text-left">
+                <div class="flex items-center gap-4 mb-6">
+                    <span class="bg-blue-600 px-4 py-1 rounded-full text-[10px] font-black italic uppercase">Cupos: <span id="spots-count">2</span>/5 Libres</span>
+                    <div class="flex text-blue-500"><i data-lucide="star" fill="currentColor" size="12"></i><i data-lucide="star" fill="currentColor" size="12"></i><i data-lucide="star" fill="currentColor" size="12"></i><i data-lucide="star" fill="currentColor" size="12"></i><i data-lucide="star" fill="currentColor" size="12"></i></div>
+                </div>
+                <h2 id="form-header" class="text-4xl md:text-6xl font-black uppercase italic mb-8 leading-[0.9] tracking-tighter">OBTÉN TU <span class="text-blue-500">HOJA DE RUTA</span> DE FACTURACIÓN.</h2>
+                <p id="form-subtext" class="text-gray-400 font-medium italic mb-10 text-lg">No es una "llamada de ventas". Es un análisis técnico de tus puntos de fuga de capital. 15 minutos que pueden salvar tu año fiscal.</p>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 text-xs font-bold uppercase italic"><i data-lucide="check-circle" class="text-blue-500" size="16"></i> Análisis de competencia incluido</div>
+                    <div class="flex items-center gap-4 text-xs font-bold uppercase italic"><i data-lucide="check-circle" class="text-blue-500" size="16"></i> Auditoría de UX/UI en vivo</div>
+                    <div class="flex items-center gap-4 text-xs font-bold uppercase italic"><i data-lucide="check-circle" class="text-blue-500" size="16"></i> Proyección de ROI personalizada</div>
+                </div>
+            </div>
+            
+            <div class="reveal glass p-10 rounded-[40px] border-white/10 relative" id="form-container">
+                <div id="loading-overlay" class="loading-overlay">
+                    <div class="spinner mb-4"></div>
+                    <p class="text-[10px] font-black uppercase tracking-widest animate-pulse">Analizando Perfil Comercial...</p>
+                </div>
+                <div id="success-msg" class="hidden absolute inset-0 bg-blue-600 z-50 rounded-[40px] flex flex-col items-center justify-center text-center p-8">
+                    <i data-lucide="party-popper" size="64" class="mb-6 animate-bounce"></i>
+                    <h3 class="text-3xl font-black italic uppercase">¡SOLICITUD RECIBIDA!</h3>
+                    <p class="mt-4 font-bold italic">Un estratega senior revisará tu caso en las próximas horas.</p>
+                </div>
+
+                <form id="lead-form" class="space-y-6 text-left">
+                    <div class="group relative">
+                        <label class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500 mb-2 block">Nombre del Fundador</label>
+                        <input type="text" required placeholder="EJ: CARLOS SLIM" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl focus:border-blue-500 outline-none uppercase font-bold text-xs tracking-widest transition-all">
+                    </div>
+                    <div class="group relative">
+                        <label class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500 mb-2 block">Email de Negocios</label>
+                        <input type="email" id="lead-email" required placeholder="EMAIL@EMPRESA.COM" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl focus:border-blue-500 outline-none uppercase font-bold text-xs tracking-widest transition-all">
+                    </div>
+                    <div class="group relative">
+                        <label class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500 mb-2 block">Sitio Web Actual</label>
+                        <input type="url" required placeholder="HTTPS://TUWEB.COM" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl focus:border-blue-500 outline-none uppercase font-bold text-xs tracking-widest transition-all">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 p-7 rounded-2xl font-black uppercase italic btn-glow tracking-[0.2em] text-sm group flex items-center justify-center gap-4">
+                        Solicitar Auditoría VIP <i data-lucide="zap" fill="white" class="group-hover:scale-125 transition-transform"></i>
+                    </button>
+                    <p class="text-center text-[8px] text-gray-600 font-bold uppercase tracking-widest italic">Privacidad 100% Garantizada. NDA Automático.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+<section id="selector-web" class="py-32 px-6 relative z-10">
+
+    <div class="max-w-6xl mx-auto">
+
+        <!-- TITULO -->
+        <div class="text-center mb-16">
+            <h2 class="text-xs font-black uppercase tracking-[0.4em] text-blue-500 mb-4 italic">
+                Elige tu Sistema
+            </h2>
+            <h3 class="text-4xl md:text-6xl font-black italic tracking-tighter text-white">
+                SELECCIONA TU <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">PÁGINA IDEAL</span>
+            </h3>
+            <p class="text-gray-400 max-w-xl mx-auto mt-4 text-sm italic">
+                Diseños listos para activar ventas desde el primer día.
+            </p>
+        </div>
+
+        <!-- OPCIONES -->
+        <div class="grid md:grid-cols-3 gap-8">
+
+            <!-- OPCIÓN 1 -->
+            <div class="group p-8 rounded-[30px] bg-white/[0.02] border border-white/10 backdrop-blur-xl hover:scale-[1.03] transition-all duration-500">
+                <h4 class="text-white text-xl font-black mb-2">Landing Básica</h4>
+                <p class="text-gray-400 text-sm mb-6">Ideal para empezar y captar clientes rápido.</p>
+                <ul class="text-xs text-gray-500 space-y-2 mb-6">
+                    <li>✓ Página simple</li>
+                    <li>✓ Botón WhatsApp</li>
+                    <li>✓ Optimizada móvil</li>
+                </ul>
+                <a href="https://wa.me/525520610872?text=Quiero%20la%20Landing%20Basica" class="block text-center py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-black uppercase hover:bg-white hover:text-black transition-all">
+                    Elegir
+                </a>
+            </div>
+
+            <!-- OPCIÓN 2 -->
+            <div class="group p-8 rounded-[30px] bg-blue-600/5 border border-blue-500/40 backdrop-blur-xl hover:scale-[1.05] transition-all duration-500">
+                <h4 class="text-white text-xl font-black mb-2">Página Pro</h4>
+                <p class="text-gray-300 text-sm mb-6">Diseñada para convertir y escalar ventas.</p>
+                <ul class="text-xs text-gray-400 space-y-2 mb-6">
+                    <li>✓ Diseño premium</li>
+                    <li>✓ Copy estratégico</li>
+                    <li>✓ Animaciones</li>
+                </ul>
+                <a href="https://wa.me/525520610872?text=Quiero%20la%20Pagina%20Pro" class="block text-center py-3 rounded-xl bg-blue-500 text-white text-xs font-black uppercase hover:bg-blue-400 transition-all">
+                    Elegir
+                </a>
+            </div>
+
+            <!-- OPCIÓN 3 -->
+            <div class="group p-8 rounded-[30px] bg-white/[0.02] border border-white/10 backdrop-blur-xl hover:scale-[1.03] transition-all duration-500">
+                <h4 class="text-white text-xl font-black mb-2">Sistema Completo</h4>
+                <p class="text-gray-400 text-sm mb-6">Automatización + captación + ventas.</p>
+                <ul class="text-xs text-gray-500 space-y-2 mb-6">
+                    <li>✓ Landing + embudo</li>
+                    <li>✓ Automatización</li>
+                    <li>✓ Escalable</li>
+                </ul>
+                <a href="https://wa.me/525520610872?text=Quiero%20el%20Sistema%20Completo" class="block text-center py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-black uppercase hover:bg-green-500 hover:text-black transition-all">
+                    Elegir
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<section id="proyectos-nuevo" class="py-32 px-6 relative z-10">
+
+    <div class="max-w-6xl mx-auto">
+
+        <div class="text-center mb-16">
+            <h2 class="text-xs font-black uppercase tracking-[0.4em] text-blue-500 mb-4 italic">
+                Casos de Éxito
+            </h2>
+            <h3 class="text-4xl md:text-6xl font-black italic tracking-tighter text-white">
+                PROYECTOS QUE <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">CONVIERTEN</span>
+            </h3>
+            <p class="text-gray-400 max-w-xl mx-auto mt-4 text-sm italic">
+                Diseñados para generar clientes desde el primer día.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+
+            <div class="group relative rounded-3xl overflow-hidden border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:scale-[1.02] transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80" class="w-full h-60 object-cover opacity-70 group-hover:scale-110 transition duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                <div class="absolute bottom-0 p-6">
+                    <h4 class="text-white font-black text-lg">Landing SaaS</h4>
+                    <p class="text-gray-400 text-xs mb-2">Captación automatizada</p>
+                </div>
+            </div>
+
+            <div class="group relative rounded-3xl overflow-hidden border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:scale-[1.02] transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80" class="w-full h-60 object-cover opacity-70 group-hover:scale-110 transition duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                <div class="absolute bottom-0 p-6">
+                    <h4 class="text-white font-black text-lg">E-commerce</h4>
+                    <p class="text-gray-400 text-xs mb-2">Ventas optimizadas</p>
+                </div>
+            </div>
+
+            <div class="group relative rounded-3xl overflow-hidden border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:scale-[1.02] transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80" class="w-full h-60 object-cover opacity-70 group-hover:scale-110 transition duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                <div class="absolute bottom-0 p-6">
+                    <h4 class="text-white font-black text-lg">Automatización</h4>
+                    <p class="text-gray-400 text-xs mb-2">Flujo inteligente</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<section class="py-40 px-6 relative z-10 text-center">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-5xl md:text-8xl font-black uppercase italic mb-12 tracking-tighter leading-none">EL TIEMPO <br><span class="text-red-600">SE AGOTA.</span></h2>
+        <div class="grid md:grid-cols-2 gap-8 mb-20 text-left">
+            <div class="glass p-10 rounded-[40px] border-red-500/20">
+                <h4 class="text-red-500 font-black italic uppercase mb-4">Escenario A: Inacción</h4>
+                <p class="text-gray-400 text-sm italic mb-6">Seguir quemando presupuesto en anuncios que no convierten, perder cuota de mercado frente a tu competencia y estancarte en facturación.</p>
+                <p class="text-xs font-black uppercase text-red-400">Costo: Millones en Oportunidades Perdidas</p>
+            </div>
+            <div class="glass p-10 rounded-[40px] border-green-500/20">
+                <h4 class="text-green-500 font-black italic uppercase mb-4">Escenario B: Dominación</h4>
+                <p class="text-gray-400 text-sm italic mb-6">Implementar un sistema validado, reducir tu CPA a la mitad y escalar tus ventas de forma predecible y automática.</p>
+                <p class="text-xs font-black uppercase text-green-400">Resultado: Liderazgo de Mercado Total</p>
+            </div>
+        </div>
+        <a href="#auditoria" class="inline-block bg-white text-black px-16 py-8 rounded-[30px] font-black text-2xl uppercase btn-glow magnetic">Elegir Escenario B Ahora</a>
+    </div>
+</section>
+<div id="trust-badge" class="fixed bottom-10 left-10 z-[100] glass px-4 py-2 rounded-full border-blue-500/20 flex items-center gap-3 opacity-0 transition-opacity duration-500 hidden md:flex">
+    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+    <span class="text-[9px] font-black uppercase tracking-widest italic">Conexión Segura: Nodo CDMX Activo</span>
+</div>
+<section id="galeria-proyectos" class="py-24 bg-[#030303] overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 mb-12">
+        <h2 class="text-xs font-black uppercase tracking-[0.3em] text-blue-500 mb-4 italic">Catálogo de Arquitecturas</h2>
+        <h3 class="text-4xl font-black italic tracking-tighter text-white">MODELOS DE <span class="text-gradient">ALTO RENDIMIENTO.</span></h3>
+    </div>
+
+    <div class="flex overflow-x-auto gap-6 px-6 pb-12 snap-x snap-mandatory scrollbar-hide no-scrollbar" style="scrollbar-width: none; -ms-overflow-style: none;">
+        
+        <div class="min-w-[300px] md:min-w-[400px] snap-center group">
+            <div class="relative overflow-hidden rounded-[30px] bg-white/5 border border-white/10 aspect-[4/5] transition-all duration-500 group-hover:border-blue-500/50">
+                <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Landing Page" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                <div class="absolute bottom-8 left-8 right-8">
+                    <p class="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] mb-2">Ecosistema V1</p>
+                    <h4 class="text-2xl font-black text-white italic mb-6">High-Conversion Landing</h4>
+                    <a href="#planes-mxn" class="inline-block px-6 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-colors">Elegir Modelo</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="min-w-[300px] md:min-w-[400px] snap-center group">
+            <div class="relative overflow-hidden rounded-[30px] bg-white/5 border border-white/10 aspect-[4/5] transition-all duration-500 group-hover:border-blue-500/50">
+                <img src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=800" alt="E-commerce" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                <div class="absolute bottom-8 left-8 right-8">
+                    <p class="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] mb-2">Ecosistema V2</p>
+                    <h4 class="text-2xl font-black text-white italic mb-6">E-commerce Dinámico</h4>
+                    <a href="#planes-mxn" class="inline-block px-6 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-colors">Elegir Modelo</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="min-w-[300px] md:min-w-[400px] snap-center group">
+            <div class="relative overflow-hidden rounded-[30px] bg-white/5 border border-white/10 aspect-[4/5] transition-all duration-500 group-hover:border-blue-500/50">
+                <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Corporativa" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                <div class="absolute bottom-8 left-8 right-8">
+                    <p class="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] mb-2">Ecosistema V3</p>
+                    <h4 class="text-2xl font-black text-white italic mb-6">Corporate Branding</h4>
+                    <a href="#planes-mxn" class="inline-block px-6 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-colors">Elegir Modelo</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="min-w-[300px] md:min-w-[400px] snap-center group">
+            <div class="relative overflow-hidden rounded-[30px] bg-white/5 border border-white/10 aspect-[4/5] transition-all duration-500 group-hover:border-blue-500/50">
+                <img src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Servicios" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                <div class="absolute bottom-8 left-8 right-8">
+                    <p class="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] mb-2">Ecosistema V4</p>
+                    <h4 class="text-2xl font-black text-white italic mb-6">Servicios & Agencias</h4>
+                    <a href="#planes-mxn" class="inline-block px-6 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-colors">Elegir Modelo</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flex justify-center gap-2 md:hidden">
+        <div class="w-8 h-1 bg-blue-500 rounded-full"></div>
+        <div class="w-2 h-1 bg-white/20 rounded-full"></div>
+        <div class="w-2 h-1 bg-white/20 rounded-full"></div>
+    </div>
+</section>
+
+<style>
+    /* Ocultar barra de scroll para estética limpia */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
+<section id="planes-mxn" class="py-24 px-6 relative overflow-hidden bg-[#030303]">
+    <div class="max-w-6xl mx-auto relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="text-xs font-black uppercase tracking-[0.4em] text-blue-500 mb-4 italic">Inversión Inteligente</h2>
+            <h3 class="text-4xl md:text-6xl font-black italic tracking-tighter mb-6 text-white">
+                SOLUCIONES <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">ACCESIBLES.</span>
+            </h3>
+            <p class="max-w-2xl mx-auto text-gray-400 text-sm md:text-base leading-relaxed">
+                Cada proyecto se desarrolla con atención al detalle, enfoque estratégico y calidad profesional. No importa si estás empezando o escalando: aquí tienes una solución para ti.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            
+            <div class="group relative p-8 rounded-[40px] bg-white/[0.02] border border-white/5 backdrop-blur-xl transition-all duration-500 hover:scale-[1.02] hover:border-blue-500/30">
+                <div class="mb-8">
+                    <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Protocolo Inicial</h4>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-4xl font-black text-white">$1,000</span>
+                        <span class="text-xs font-bold text-gray-500">MXN</span>
+                    </div>
+                </div>
+                <ul class="space-y-4 mb-10 text-sm text-gray-400">
+                    <li class="flex items-center gap-3"><span class="text-blue-500">✓</span> Landing Page Esencial</li>
+                    <li class="flex items-center gap-3"><span class="text-blue-500">✓</span> Optimización Móvil</li>
+                    <li class="flex items-center gap-3"><span class="text-blue-500">✓</span> Enlace Directo a WhatsApp</li>
+                </ul>
+                <a href="https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20interesa%20el%20Plan%20Basico%20de%20$1,000" class="block w-full py-4 rounded-2xl bg-white/5 border border-white/10 text-center text-xs font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">Seleccionar</a>
+            </div>
+
+            <div class="group relative p-8 rounded-[40px] bg-blue-600/5 border border-blue-500/40 backdrop-blur-xl transition-all duration-500 hover:scale-[1.05] shadow-[0_0_40px_rgba(59,130,246,0.1)]">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-500 text-[10px] font-black px-4 py-1 rounded-full text-white uppercase tracking-tighter">Más Popular</div>
+                <div class="mb-8">
+                    <h4 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-2">Elite Engine</h4>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-4xl font-black text-white">$1,500</span>
+                        <span class="text-xs font-bold text-gray-500">MXN</span>
+                    </div>
+                </div>
+                <ul class="space-y-4 mb-10 text-sm text-gray-300">
+                    <li class="flex items-center gap-3"><span class="text-blue-500">✓</span> Estructura de Alta Conversión</li>
+                    <li class="flex items-center gap-3"><span class="text-blue-500">✓</span> Copywriting Estratégico</li>
+                    <li class="flex items-center gap-3"><span class="text-blue-500">✓</span> Integración de CRM Básico</li>
+                    <li class="flex items-center gap-3"><span class="text-blue-500">✓</span> Soporte Prioritario</li>
+                </ul>
+                <a href="https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20interesa%20el%20Plan%20Profesional%20de%20$1,500" class="block w-full py-4 rounded-2xl bg-blue-500 text-center text-xs font-black uppercase tracking-widest text-white hover:bg-blue-400 shadow-lg shadow-blue-500/20 transition-all">Escalar Ahora</a>
+            </div>
+
+            <div class="group relative p-8 rounded-[40px] bg-white/[0.02] border border-white/5 backdrop-blur-xl transition-all duration-500 hover:scale-[1.02] hover:border-green-500/30">
+                <div class="mb-8">
+                    <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Full Archive</h4>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-4xl font-black text-white">$3,000</span>
+                        <span class="text-xs font-bold text-gray-500">MXN</span>
+                    </div>
+                </div>
+                <ul class="space-y-4 mb-10 text-sm text-gray-400">
+                    <li class="flex items-center gap-3"><span class="text-green-500">✓</span> Ecosistema Digital Total</li>
+                    <li class="flex items-center gap-3"><span class="text-green-500">✓</span> Automatización de Ventas</li>
+                    <li class="flex items-center gap-3"><span class="text-green-500">✓</span> Análisis de Datos Avanzado</li>
+                    <li class="flex items-center gap-3"><span class="text-green-500">✓</span> Consultoría de Escalamiento</li>
+                </ul>
+                <a href="https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20interesa%20el%20Plan%20Premium%20de%20$3,000" class="block w-full py-4 rounded-2xl bg-white/5 border border-white/10 text-center text-xs font-black uppercase tracking-widest hover:bg-green-500 hover:text-black transition-all">Dominar Mercado</a>
+            </div>
+
+        </div>
+        
+        <p class="text-center mt-12 text-[10px] text-gray-600 uppercase tracking-[0.2em]">
+            Precios finales en Pesos Mexicanos. Sin cargos ocultos. Nodo de pago seguro activo.
+        </p>
+    </div>
+</section>
+
+<footer class="py-20 border-t border-white/5 text-center bg-black relative z-10">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-12">
+        <div class="text-left">
+            <div class="text-2xl font-black italic tracking-tighter uppercase mb-4">LYA<span class="text-blue-500">DIGITAL</span></div>
+            <p class="text-[9px] font-black uppercase tracking-[0.5em] text-gray-600 italic">ARCHIVE DIGITAL SYSTEMS • CDMX HQ • v2.0.26</p>
+        </div>
+        <div class="flex gap-16 text-left">
+            <div>
+                <p class="text-[8px] font-black text-blue-500 uppercase tracking-widest mb-4">Legal</p>
+                <div class="flex flex-col gap-2 text-[10px] font-bold text-gray-500 italic uppercase">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Service</a>
+                    <a href="#" class="hover:text-white">Cookies</a>
+                </div>
+            </div>
+            <div>
+                <p class="text-[8px] font-black text-blue-500 uppercase tracking-widest mb-4">Social</p>
+                <div class="flex flex-col gap-2 text-[10px] font-bold text-gray-500 italic uppercase">
+                    <a href="#" class="hover:text-white">LinkedIn</a>
+                    <a href="#" class="hover:text-white">Instagram</a>
+                    <a href="#" class="hover:text-white">X / Twitter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<a href="https://wa.me/525520610872?text=Hola%20LYA%20ARCHIVE,%20solicito%20informaci%C3%B3n%20sobre%20los%20sistemas%20digitales." 
+   target="_blank" 
+   class="whatsapp-glow"
+   aria-label="Contacto WhatsApp">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-14.7 8.38 8.38 0 0 1 3.8.9L21 3z"></path>
+    </svg>
+    <span class="text-[10px] font-black uppercase tracking-tighter ml-2 hidden md:inline">Soporte Operativo</span>
+</a>
+
+</footer>
+
+<script>
+    // Se mantiene toda tu lógica original de scripts intacta para no romper animaciones
+    lucide.createIcons();
+    gsap.registerPlugin(ScrollTrigger);
+
+    const cursor = document.getElementById('cursor');
+    const cursorBlur = document.getElementById('cursor-blur');
+
+    document.addEventListener('mousemove', (e) => {
+        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+        gsap.to(cursorBlur, { left: e.clientX, top: e.clientY, duration: 0.5 });
+        
+        document.querySelectorAll('.spotlight').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            el.style.setProperty('--x', `${e.clientX - rect.left}px`);
+            el.style.setProperty('--y', `${e.clientY - rect.top}px`);
+        });
+    });
+
+    document.querySelectorAll('a, button, input, .tilt-card').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.style.transform = 'scale(6)';
+            cursor.style.background = '#3b82f6';
+            cursor.style.mixBlendMode = 'normal';
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.background = 'white';
+            cursor.style.mixBlendMode = 'difference';
+        });
+    });
+
+    document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const dx = (x - rect.width / 2) / 15;
+            const dy = (y - rect.height / 2) / 15;
+            gsap.to(card, { rotationY: dx, rotationX: -dy, duration: 0.3 });
+        });
+        card.addEventListener('mouseleave', () => gsap.to(card, { rotationY: 0, rotationX: 0, duration: 0.5 }));
+    });
+
+    document.querySelectorAll('.magnetic').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width/2) * 0.4;
+            const y = (e.clientY - rect.top - rect.height/2) * 0.4;
+            gsap.to(btn, { x, y, duration: 0.3 });
+        });
+        btn.addEventListener('mouseleave', () => gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.3)" }));
+    });
+
+    const initThree = () => {
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+        const geometry = new THREE.IcosahedronGeometry(15, 0);
+        const material = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.08 });
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+        camera.position.z = 40;
+        const animate = () => {
+            requestAnimationFrame(animate);
+            mesh.rotation.y += 0.001;
+            mesh.rotation.x += 0.0005;
+            renderer.render(scene, camera);
+        };
+        animate();
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    };
+    if(window.innerWidth > 1024) initThree();
+
+    document.querySelectorAll('.reveal').forEach(el => {
+        gsap.to(el, { scrollTrigger: { trigger: el, start: "top 90%" }, opacity: 1, y: 0, duration: 1, ease: "power4.out" });
+    });
+
+    const salesData = [
+        { name: "Andrés G.", amount: 500, loc: "Monterrey" },
+        { name: "SaaS Solutions", amount: 1500, loc: "CDMX" },
+        { name: "Mariana R.", amount: 800, loc: "Guadalajara" },
+        { name: "Digital Edge", amount: 1500, loc: "Querétaro" }
+    ];
+
+    function initSalesNotifier() {
+        const popup = document.getElementById('sales-notifier');
+        const info = document.getElementById('sales-info');
+        setInterval(() => {
+            const sale = salesData[Math.floor(Math.random() * salesData.length)];
+            info.innerText = `${sale.name} acaba de invertir $${sale.amount} USD`;
+            popup.classList.add('active');
+            setTimeout(() => popup.classList.remove('active'), 5000);
+        }, 18000);
+    }
+
+    function initTimer() {
+        const timerDisplay = document.getElementById('timer');
+        let time = 9000;
+        setInterval(() => {
+            time--;
+            const h = Math.floor(time / 3600);
+            const m = Math.floor((time % 3600) / 60);
+            const s = time % 60;
+            timerDisplay.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }, 1000);
+    }
+
+    const phoneFeed = document.getElementById('phone-feed');
+    const events = [
+        { t: 'NUEVO LEAD', b: 'Inmobiliaria Alfa agendó auditoría.', c: 'text-blue-500' },
+        { t: 'PAGO RECIBIDO', b: 'Transferencia de $1,500.00 USD.', c: 'text-green-500' },
+        { t: 'WHATSAPP', b: '¿Cuál es el siguiente paso?', c: 'text-blue-500' }
+    ];
+
+    function pushPhoneNotif() {
+        const ev = events[Math.floor(Math.random()*events.length)];
+        const div = document.createElement('div');
+        div.className = 'ios-notif bg-white/5 border border-white/10 p-3 rounded-2xl';
+        div.innerHTML = `<p class="text-[8px] uppercase font-black ${ev.c}">${ev.t}</p><p class="text-[10px] font-medium italic">${ev.b}</p>`;
+        phoneFeed.prepend(div);
+        if(phoneFeed.children.length > 5) phoneFeed.lastChild.remove();
+    }
+
+    document.getElementById('lead-email').addEventListener('input', (e) => {
+        const val = e.target.value.toLowerCase();
+        const generic = ['gmail', 'hotmail', 'outlook', 'yahoo', 'icloud'];
+        const isCorp = val.includes('@') && !generic.some(d => val.includes(d));
+        const container = document.getElementById('form-container');
+        if(isCorp && val.length > 5) container.classList.add('corporate-mode');
+        else container.classList.remove('corporate-mode');
+    });
+
+    document.getElementById('lead-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const overlay = document.getElementById('loading-overlay');
+        overlay.style.display = 'flex';
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            document.getElementById('success-msg').classList.remove('hidden');
+        }, 2500);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        initSalesNotifier();
+        initTimer();
+        setInterval(pushPhoneNotif, 4500);
+        setInterval(() => {
+            const count = Math.floor(Math.random() * (30 - 10) + 10);
+            document.getElementById('live-users').innerText = `${count} PERSONAS VIENDO`;
+        }, 8000);
+    });
+// 1. Barra de Progreso de Lectura
+window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById("reading-progress").style.width = scrolled + "%";
+    
+    // Mostrar badge de confianza tras cierto scroll
+    const badge = document.getElementById('trust-badge');
+    if(winScroll > 500) badge.classList.replace('opacity-0', 'opacity-100');
+    else badge.classList.replace('opacity-100', 'opacity-0');
+});
+
+// 2. Detector de Intención de Salida (Solo una vez por sesión)
+let exitShown = false;
+document.addEventListener('mouseleave', (e) => {
+    if (e.clientY < 0 && !exitShown) {
+        pushPhoneNotifCustom("OFERTA FLASH", "Se liberó un cupo para auditoría hoy.", "text-red-500");
+        exitShown = true;
+    }
+});
+
+function pushPhoneNotifCustom(title, body, colorClass) {
+    const div = document.createElement('div');
+    div.className = 'ios-notif bg-blue-600/20 border border-blue-500/30 p-4 rounded-2xl backdrop-blur-xl';
+    div.innerHTML = `<p class="text-[9px] uppercase font-black ${colorClass} italic tracking-widest">${title}</p><p class="text-[11px] font-bold text-white">${body}</p>`;
+    phoneFeed.prepend(div);
+    
+    // Hacer vibrar el teléfono visualmente
+    gsap.fromTo(".tilt-card", {x: -2}, {x: 2, duration: 0.1, repeat: 5, yoyo: true});
+}
+
+// 3. Efecto de "Contador de Escasez" en el Formulario
+let spots = 2;
+const spotElement = document.getElementById('spots-count');
+setInterval(() => {
+    if(spots > 1 && Math.random() > 0.8) {
+        spots--;
+        spotElement.innerText = spots;
+        spotElement.classList.add('text-red-500', 'scale-110');
+        setTimeout(() => spotElement.classList.remove('scale-110'), 200);
+    }
+}, 45000);
+// Simular que el sistema está "calculando" algo real
+const inputs = document.querySelectorAll('input');
+inputs.forEach(input => {
+    input.addEventListener('blur', () => {
+        if(input.value.length > 3) {
+            pushPhoneNotifCustom("DATOS VALIDADOS", "Analizando impacto comercial...", "text-blue-400");
+        }
+    });
+});
+
+// Mensaje de urgencia "real" al final de la página
+window.onscroll = function() {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        if(!exitShown) {
+            pushPhoneNotifCustom("RESERVADO", "Alguien de Monterrey acaba de agendar.", "text-green-500");
+        }
+    }
+};
+document.querySelectorAll('button, a').forEach(el => {
+    el.addEventListener('click', function() {
+
+        if (el.href && el.href.includes('wa.me')) return;
+
+        let texto = el.innerText.trim().toLowerCase();
+        let mensaje = "Hola, quiero información";
+
+        if(texto.includes("basica")) mensaje = "Quiero la Landing Básica";
+        else if(texto.includes("pro")) mensaje = "Quiero la Página Pro";
+        else if(texto.includes("completo")) mensaje = "Quiero el Sistema Completo";
+        else if(texto.includes("escalar")) mensaje = "Quiero escalar mi negocio";
+        else if(texto.includes("auditoria")) mensaje = "Quiero una auditoría";
+
+        window.open(`https://wa.me/525520610872?text=${encodeURIComponent(mensaje)}`, '_blank');
+    });
+});
+// 🎬 Slider tipo Netflix automático
+const slider = document.getElementById('netflix-slider');
+
+let index = 0;
+
+setInterval(() => {
+    if(!slider) return;
+
+    index++;
+    if(index > 2) index = 0;
+
+    slider.style.transform = `translateX(-${index * 100}%)`;
+}, 3000);
+</script>
+</body>
+</html>
+
