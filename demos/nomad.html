@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOMAD | La Nueva Pieza Esencial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;700&display=swap');
+
+        :root {
+            --font-editorial: 'Bodoni Moda', serif;
+            --font-main: 'Inter', sans-serif;
+        }
+
+        body { font-family: var(--font-main); background-color: #fff; color: #000; overflow-x: hidden; }
+        h1, h2, .font-serif { font-family: var(--font-editorial); }
+
+        .luxury-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+        }
+
+        .luxury-btn:hover { background: #000; color: #fff; }
+        
+        .image-zoom { transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+        .image-zoom:hover { transform: scale(1.05); }
+
+        /* Estilo para el espacio en blanco exagerado */
+        section { padding-top: 8rem; padding-bottom: 8rem; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-[0.3em] uppercase">NOMAD</div>
+            <div class="hidden md:flex gap-10 text-[10px] uppercase tracking-widest font-bold">
+                <a href="#historia" class="hover:text-gray-500 transition">Historia</a>
+                <a href="#producto" class="hover:text-gray-500 transition">Colección</a>
+                <a href="#catalogo" class="hover:text-gray-500 transition">Lookbook</a>
+            </div>
+            <div>
+                <a href="https://wa.me/TU_NUMERO_AQUI" class="text-[10px] border-b-2 border-black pb-1 uppercase tracking-widest font-bold">Comprar Ahora</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="h-screen p-0 relative flex items-center justify-center overflow-hidden bg-gray-100">
+        <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=2069&auto=format&fit=crop" 
+             alt="Nomad Premium Bag" 
+             class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="relative z-10 text-center text-white px-6">
+            <span class="block uppercase tracking-[0.5em] text-xs mb-6 animate-pulse">Edición Limitada 2026</span>
+            <h1 class="text-7xl md:text-9xl leading-none mb-8 italic">Le Minimalisme.</h1>
+            <a href="#producto" class="bg-white text-black px-12 py-5 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-500">
+                Descubrir Pieza
+            </a>
+        </div>
+    </section>
+
+    <section id="historia" class="max-w-5xl mx-auto px-6 text-center">
+        <p class="uppercase tracking-[0.3em] text-[10px] text-gray-400 mb-10">Nuestra Filosofía</p>
+        <h2 class="text-4xl md:text-6xl mb-12 italic leading-tight">Diseñamos para quienes entienden que el lujo no grita, <br class="hidden md:block"> sino que se siente.</h2>
+        <div class="h-[1px] w-24 bg-black mx-auto mb-12"></div>
+        <p class="text-gray-500 font-light leading-relaxed max-w-2xl mx-auto text-lg">
+            Nacida en el corazón del diseño contemporáneo, cada bolsa NOMAD es el resultado de 48 horas de artesanía manual y materiales seleccionados bajo criterios de sostenibilidad absoluta. No es un accesorio, es tu legado diario.
+        </p>
+    </section>
+
+    <section id="producto" class="bg-[#fafafa] px-6">
+        <div class="max-w-[1400px] mx-auto grid md:grid-cols-2 gap-20 items-center">
+            <div class="overflow-hidden bg-white p-4 shadow-sm">
+                <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1000&auto=format&fit=crop" 
+                     alt="Nomad Bag Front View" 
+                     class="w-full image-zoom">
+            </div>
+            <div class="space-y-10">
+                <div>
+                    <h3 class="text-5xl mb-4 italic">The Nomad Tote v.1</h3>
+                    <p class="text-2xl font-light text-gray-400">$850.00 USD</p>
+                </div>
+                <p class="text-gray-600 leading-relaxed font-light">
+                    Cuero de grano entero con curtido vegetal. Herrajes de latón macizo bañados en paladio. Un compartimento central diseñado para la tecnología moderna sin sacrificar la silueta clásica.
+                </p>
+                <div class="flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-black border-2 border-gray-300 cursor-pointer"></div>
+                    <div class="w-8 h-8 rounded-full bg-[#D2B48C] hover:scale-110 transition cursor-pointer"></div>
+                    <div class="w-8 h-8 rounded-full bg-[#E5E4E2] hover:scale-110 transition cursor-pointer"></div>
+                </div>
+                <a href="https://wa.me/TU_NUMERO_AQUI?text=Hola!%20Quiero%20comprar%20The%20Nomad%20Tote%20en%20color%20Negro" 
+                   class="inline-block w-full bg-black text-white text-center py-6 text-xs font-bold tracking-[0.2em] hover:bg-gray-800 transition">
+                    Añadir al Carrito
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="border-y border-gray-100 px-6">
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 text-center">
+            <div class="space-y-4">
+                <div class="text-2xl font-serif">01.</div>
+                <h4 class="uppercase tracking-widest text-xs font-bold">Piel Italiana</h4>
+                <p class="text-gray-400 text-sm font-light">Seleccionada a mano en las mejores curtidurías de la Toscana.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="text-2xl font-serif">02.</div>
+                <h4 class="uppercase tracking-widest text-xs font-bold">Garantía Vitalicia</h4>
+                <p class="text-gray-400 text-sm font-light">Nuestra construcción está pensada para durar generaciones.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="text-2xl font-serif">03.</div>
+                <h4 class="uppercase tracking-widest text-xs font-bold">Envío Global</h4>
+                <p class="text-gray-400 text-sm font-light">Logística premium con entrega asegurada en 3-5 días hábiles.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="catalogo" class="px-6 bg-white">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="aspect-[3/4] overflow-hidden bg-gray-100">
+                    <img src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?q=80&w=1000&auto=format&fit=crop" alt="Detail 1" class="w-full h-full object-cover image-zoom">
+                </div>
+                <div class="aspect-[3/4] overflow-hidden bg-gray-100 md:mt-20">
+                    <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=1000&auto=format&fit=crop" alt="Lifestyle" class="w-full h-full object-cover image-zoom">
+                </div>
+                <div class="aspect-[3/4] overflow-hidden bg-gray-100">
+                    <img src="https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=1000&auto=format&fit=crop" alt="Detail 2" class="w-full h-full object-cover image-zoom">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-black text-white px-6">
+        <div class="max-w-4xl mx-auto text-center space-y-12">
+            <h2 class="text-5xl md:text-7xl italic leading-tight">Haz de lo ordinario algo extraordinario.</h2>
+            <div class="space-y-6">
+                <p class="uppercase tracking-[0.4em] text-xs font-light">Disponibilidad: <span class="text-gray-400 italic">24 Unidades Restantes</span></p>
+                
+                <a href="https://wa.me/TU_NUMERO_AQUI?text=Hola!%20Me%20interesa%20la%20bolsa%20Premium%20Nomad" 
+                   class="inline-flex items-center gap-6 bg-white text-black px-14 py-6 text-xs font-bold uppercase tracking-[0.2em] hover:bg-gray-200 transition-all transform hover:-translate-y-1 shadow-2xl">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.481 5.229 3.481 8.406c0 6.555-5.332 11.887-11.888 11.887-2.01 0-3.991-.51-5.757-1.478l-6.231 1.702zm6.103-3.845c1.614.954 3.202 1.435 4.712 1.435 5.732 0 10.399-4.666 10.399-10.398 0-5.732-4.667-10.399-10.399-10.399-2.779 0-5.392 1.082-7.357 3.047s-3.048 4.578-3.048 7.352c0 1.706.502 3.39 1.452 4.887l-.95 3.468 3.591-.98zm11.332-6.52c-.287-.144-1.696-.838-1.958-.934-.263-.096-.454-.144-.645.144-.191.288-.739.934-.906 1.126-.167.192-.335.215-.622.072-.287-.144-1.21-.447-2.305-1.423-.852-.76-1.427-1.7-1.594-1.988-.167-.287-.018-.443.126-.586.129-.129.287-.335.43-.503.144-.167.191-.287.287-.479.096-.192.048-.359-.024-.503-.072-.144-.645-1.554-.884-2.129-.233-.561-.47-.483-.645-.492l-.55-.008c-.191 0-.501.072-.764.359-.263.287-1.003.982-1.003 2.395 0 1.413 1.027 2.781 1.17 2.973.144.192 2.022 3.088 4.899 4.328.685.296 1.219.472 1.636.605.689.219 1.316.188 1.812.114.553-.082 1.696-.694 1.935-1.365.239-.67.239-1.244.167-1.365-.072-.121-.263-.192-.55-.336z"/></svg>
+                    Finalizar Compra
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-10 px-6 border-t border-gray-100 text-[10px] uppercase tracking-[0.4em] font-bold text-center space-y-6">
+        <div class="flex flex-wrap justify-center gap-10">
+            <a href="#">Privacidad</a>
+            <a href="#">Términos</a>
+            <a href="#">Sostenibilidad</a>
+            <a href="#">Instagram</a>
+        </div>
+        <div class="text-gray-300">&copy; 2026 NOMAD STUDIO. All rights reserved.</div>
+    </footer>
+
+</body>
+</html>
+
