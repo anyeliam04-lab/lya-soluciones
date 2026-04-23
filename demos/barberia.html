@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESTUDIO DIGITAL | Propuesta Exclusiva</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <style>
-        /* TIPOGRAFÍA ESTILO LUJO */
-        /* Usamos Bodoni para títulos (serif clásica y elegante) y Montserrat para cuerpo (minimalista) */
         @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6-96,400;6-96,700&family=Montserrat:wght@300;400;600&display=swap');
 
         :root {
@@ -17,192 +20,290 @@
 
         body {
             font-family: var(--font-sans);
-            background-color: #ffffff; /* Fondo blanco puro estilo Zara */
-            color: #000000; /* Texto negro puro */
-            scroll-behavior: smooth;
+            background-color: #ffffff;
+            color: #000000;
+            overflow-x: hidden;
         }
 
         h1, h2, h3, .luxury-title {
             font-family: var(--font-serif);
             font-weight: 400;
-            letter-spacing: -0.05em; /* Títulos muy juntos, estilo editorial */
+            letter-spacing: -0.04em;
         }
 
-        /* Espaciado extra exagerado entre secciones, típico de webs de lujo */
         section {
-            padding-top: 10rem;
-            padding-bottom: 10rem;
+            padding-top: 12rem;
+            padding-bottom: 12rem;
         }
 
-        /* Botones estilo Versace/Zara: Rectangulares, negros, sin bordes redondeados */
+        /* Botones Estilo Boutique */
         .btn-luxury {
             background-color: #000000;
             color: #ffffff;
-            padding: 1.25rem 2.5rem;
+            padding: 1.5rem 3rem;
             text-transform: uppercase;
             font-weight: 600;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            transition: all 0.3s ease;
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             border: 1px solid #000000;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-luxury:hover {
-            background-color: #ffffff;
+            background-color: transparent;
             color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
         .btn-luxury-outline {
-            background-color: #ffffff;
-            color: #000000;
-            padding: 1.25rem 2.5rem;
+            background-color: transparent;
+            color: #ffffff;
+            padding: 1.5rem 3rem;
             text-transform: uppercase;
             font-weight: 600;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            transition: all 0.3s ease;
-            border: 1px solid #000000;
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            transition: all 0.4s ease;
+            border: 1px solid #ffffff;
         }
 
         .btn-luxury-outline:hover {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: #000000;
         }
-        
-        /* Utility class para mayúsculas espaciadas */
+
         .uppercase-spaced {
             text-transform: uppercase;
-            letter-spacing: 0.15em;
-            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            font-size: 0.7rem;
+        }
+
+        /* Reveal Animation Classes */
+        .reveal { opacity: 0; transform: translateY(40px); }
+        
+        .img-parallax {
+            transition: transform 0.6s cubic-bezier(0, 0, 0, 1);
+        }
+
+        .line-draw {
+            width: 0;
+            height: 1px;
+            background: #000;
+            transition: width 1.5s ease;
         }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+    <nav class="fixed w-full z-[100] bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-500">
         <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-6 flex justify-between items-center">
-            <div class="uppercase-spaced font-semibold text-lg tracking-[0.25em]">
-                ESTUDIO / DEMO
+            <div class="uppercase-spaced font-extrabold text-sm tracking-[0.4em]">
+                ESTUDIO / <span class="font-light">DEMO</span>
             </div>
-            <a href="https://wa.me/TU_NUMERO_AQUI?text=Deseo%20una%20consultoría%20de%20diseño%20exclusiva" class="uppercase-spaced text-xs hover:opacity-60 transition">
-                Contacto
-            </a>
+            <div class="flex items-center gap-8">
+                <a href="https://wa.me/TU_NUMERO_AQUI?text=Deseo%20una%20consultoría%20de%20diseño%20exclusiva" 
+                   class="uppercase-spaced font-bold hover:opacity-50 transition group flex items-center gap-2">
+                    <span class="w-2 h-2 bg-black rounded-full scale-0 group-hover:scale-100 transition-transform"></span>
+                    Contacto
+                </a>
+            </div>
         </div>
     </nav>
 
-    <section class="h-screen flex items-center justify-center bg-white px-6">
-        <div class="text-center">
-            <p class="uppercase-spaced mb-6 text-gray-500">Diseño Digital de Autor</p>
-            <h1 class="text-6xl md:text-8xl lg:text-9xl mb-12 leading-none">
-                El nuevo estándar<br>de la barbería.
+    <header class="h-screen flex items-center justify-center bg-white px-6 relative">
+        <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
+            <div class="h-full w-full bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')]"></div>
+        </div>
+        <div class="text-center relative z-10">
+            <p class="reveal uppercase-spaced mb-8 text-gray-400 font-medium">Arquitectura Visual de Autor</p>
+            <h1 class="reveal text-7xl md:text-9xl lg:text-[10rem] mb-16 leading-[0.85] tracking-tighter">
+                El nuevo estándar<br><span class="italic text-gray-300">de la barbería.</span>
             </h1>
-            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div class="reveal flex flex-col sm:flex-row gap-8 justify-center items-center">
                 <a href="#solucion" class="btn-luxury">Explorar Propuesta</a>
-                <a href="#mockup" class="uppercase-spaced text-xs border-b border-black pb-1 hover:border-gray-400 transition">Ver Demo Visual</a>
+                <a href="#mockup" class="uppercase-spaced font-bold border-b-2 border-black pb-2 hover:opacity-40 transition">Ver Demo Visual</a>
             </div>
         </div>
-    </section>
+    </header>
 
     <section id="problema" class="bg-[#fafafa] px-6">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-            <h2 class="text-5xl md:text-6xl leading-tight">
-                La mediocridad digital<br>es el enemigo<br>de lo exclusivo.
-            </h2>
-            <div class="space-y-6 text-gray-700 font-light leading-relaxed">
-                <p class="uppercase-spaced text-black font-semibold">El Diagnóstico</p>
-                <p>Una web lenta, un diseño genérico o una experiencia de reserva compleja devalúan la percepción de tu arte. Tu barbería no es para todos; tu presencia digital tampoco debería serlo.</p>
-                <p>La saturación del mercado exige una identidad visual inconfundible.</p>
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-24 items-center">
+            <div class="reveal">
+                <h2 class="text-6xl md:text-7xl leading-[0.9] mb-8">
+                    La mediocridad<br>digital es el<br><span class="italic">peor enemigo.</span>
+                </h2>
+                <div class="w-24 h-1 bg-black"></div>
+            </div>
+            <div class="reveal space-y-8 text-gray-800 font-light text-lg leading-relaxed">
+                <p class="uppercase-spaced text-black font-black">01 / El Diagnóstico</p>
+                <p>Una web lenta, un diseño genérico o una experiencia de reserva compleja devalúan la percepción de su arte. Su barbería no es para todos; su presencia digital tampoco debería serlo.</p>
+                <p>El mercado premium no perdona la falta de coherencia visual. La exclusividad nace de la atención al detalle.</p>
             </div>
         </div>
     </section>
 
     <section id="solucion" class="bg-white px-6">
         <div class="max-w-[1600px] mx-auto">
-            <div class="text-center mb-24">
-                <p class="uppercase-spaced mb-4 text-gray-500">La Propuesta</p>
-                <h2 class="text-6xl md:text-7xl">Arquitectura Digital de Lujo</h2>
+            <div class="flex flex-col md:flex-row justify-between items-end mb-32 gap-8 reveal">
+                <div class="max-w-2xl">
+                    <p class="uppercase-spaced mb-6 text-gray-400 font-bold">La Propuesta</p>
+                    <h2 class="text-7xl md:text-8xl leading-none">Arquitectura<br>de Lujo.</h2>
+                </div>
+                <p class="text-gray-400 font-light max-w-sm text-right hidden md:block">Metodologías de diseño enfocadas en la conversión de alto valor.</p>
             </div>
-            
-            <div class="grid md:grid-cols-3 border-t border-b border-gray-100">
-                <div class="p-12 md:p-16 border-r border-gray-100 space-y-4">
-                    <p class="text-4xl font-light text-gray-300">01/</p>
-                    <h3 class="text-3xl">Inmersión Visual</h3>
-                    <p class="font-light text-gray-600 pt-4">Diseño *Mobile-First* donde la tipografía y la imagen de alta calidad son protagonistas. Una experiencia sensorial, no solo funcional.</p>
+
+            <div class="grid md:grid-cols-3">
+                <div class="reveal p-12 md:p-20 border border-gray-100 space-y-8 group hover:bg-black hover:text-white transition-all duration-700">
+                    <p class="text-5xl font-light text-gray-200 group-hover:text-gray-800 transition-colors">01/</p>
+                    <h3 class="text-4xl italic">Inmersión Visual</h3>
+                    <p class="font-light leading-relaxed group-hover:text-gray-300">Diseño *Mobile-First* donde la tipografía y la imagen son protagonistas. Una experiencia sensorial, no solo funcional.</p>
                 </div>
-                <div class="p-12 md:p-16 border-r border-gray-100 space-y-4">
-                    <p class="text-4xl font-light text-gray-300">02/</p>
-                    <h3 class="text-3xl">Reserva *Seamless*</h3>
-                    <p class="font-light text-gray-600 pt-4">Un sistema de agendamiento intuitivo y rápido, integrado invisibles en el diseño. Lujo es facilidad.</p>
+                <div class="reveal p-12 md:p-20 border border-gray-100 space-y-8 group hover:bg-black hover:text-white transition-all duration-700">
+                    <p class="text-5xl font-light text-gray-200 group-hover:text-gray-800 transition-colors">02/</p>
+                    <h3 class="text-4xl italic">Reserva Seamless</h3>
+                    <p class="font-light leading-relaxed group-hover:text-gray-300">Un sistema de agendamiento intuitivo, integrado invisiblemente. Porque el verdadero lujo es la facilidad.</p>
                 </div>
-                <div class="p-12 md:p-16 space-y-4">
-                    <p class="text-4xl font-light text-gray-300">03/</p>
-                    <h3 class="text-3xl">Performance Pura</h3>
-                    <p class="font-light text-gray-600 pt-4">Optimización técnica para una carga instantánea. La espera no forma parte de la experiencia *premium*.</p>
+                <div class="reveal p-12 md:p-20 border border-gray-100 space-y-8 group hover:bg-black hover:text-white transition-all duration-700">
+                    <p class="text-5xl font-light text-gray-200 group-hover:text-gray-800 transition-colors">03/</p>
+                    <h3 class="text-4xl italic">Performance Pura</h3>
+                    <p class="font-light leading-relaxed group-hover:text-gray-300">Optimización técnica para carga instantánea. La espera no forma parte del vocabulario premium.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="p-0 bg-black h-[80vh] flex items-center justify-center overflow-hidden relative">
-        <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=2070&auto=format&fit=crop" 
-             alt="Luxury Barber Experience" 
-             class="absolute inset-0 w-full h-full object-cover opacity-60">
+    <section class="p-0 bg-black h-screen flex items-center justify-center overflow-hidden relative">
+        <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=2070"
+             alt="Luxury Barber"
+             class="img-parallax absolute inset-0 w-full h-full object-cover opacity-50 scale-110">
         <div class="relative z-10 text-center text-white px-6">
-            <h2 class="text-5xl md:text-7xl lg:text-8xl leading-none mb-8">No vendemos webs.<br>Diseñamos deseo.</h2>
-            <a href="#mockup" class="btn-luxury-outline border-white text-white hover:bg-white hover:text-black">Ver la Demo</a>
-        </div>
-    </section>
-
-    <section id="mockup" class="bg-white px-6 mt-20">
-        <div class="max-w-7xl mx-auto text-center">
-            <p class="uppercase-spaced mb-16 text-gray-500">Demo Visual: Concepto Gentleman's Club</p>
-            
-            <div class="border border-gray-100 shadow-sm p-2 bg-[#fafafa]">
-                <div class="bg-white p-6 md:p-12 text-left space-y-10 border border-gray-100">
-                    <div class="flex justify-between items-center uppercase-spaced text-xs">
-                        <span>The Gentry / Co.</span>
-                        <span class="text-gray-400">Menú</span>
-                    </div>
-                    <div class="h-[1px] bg-gray-100 w-full"></div>
-                    <div class="grid md:grid-cols-2 gap-12 items-end">
-                        <h4 class="text-6xl font-light leading-none">Corte.<br>Barba.<br>Ritual.</h4>
-                        <p class="uppercase-spaced text-xs text-gray-500 border-b border-black pb-2 inline-block">Reservar Cita</p>
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1000&auto=format&fit=crop" alt="Barber Concept" class="w-full h-96 object-cover">
-                </div>
+            <h2 class="reveal text-6xl md:text-8xl lg:text-[10rem] leading-[0.8] mb-12">No vendemos webs.<br><span class="italic font-light opacity-60">Diseñamos deseo.</span></h2>
+            <div class="reveal">
+                <a href="#mockup" class="btn-luxury-outline">Ver Demo Visual</a>
             </div>
-            
-            <p class="mt-12 text-sm text-gray-500 font-light max-w-lg mx-auto">Esta demo visual muestra la jerarquía tipográfica y el uso estratégico del espacio para evocar exclusividad instantánea.</p>
         </div>
     </section>
 
-    <section class="bg-[#fafafa] px-6 text-center border-t border-gray-100">
-        <div class="max-w-3xl mx-auto">
-            <p class="uppercase-spaced mb-6 text-gray-500">Inicia la Transformación</p>
-            <h2 class="text-5xl md:text-6xl leading-tight mb-16">¿Su barbería está lista para el siguiente nivel de diseño?</h2>
-            
-            <a href="https://wa.me/TU_NUMERO_AQUI?text=Hola,%20solicito%20información%20sobre%20el%20diseño%20de%20autor%20para%20mi%20negocio." 
-               class="btn-luxury inline-flex items-center gap-4 hover:scale-105 transition-transform">
+    <section id="mockup" class="bg-white px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-24 reveal">
+                <p class="uppercase-spaced mb-4 text-gray-400 font-bold tracking-[0.5em]">Demo Visual: Concepto Gentleman's Club</p>
+                <div class="h-[1px] w-40 bg-black mx-auto"></div>
+            </div>
+
+            <div class="reveal relative bg-[#fafafa] p-4 md:p-12 overflow-hidden shadow-2xl">
+                <div class="bg-white p-8 md:p-20 text-left space-y-16 border border-gray-100 relative z-10">
+                    <div class="flex justify-between items-center uppercase-spaced text-[10px] font-black">
+                        <span>The Gentry / Co.</span>
+                        <span class="flex items-center gap-2">Menú <div class="w-8 h-[1px] bg-black"></div></span>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-16 items-end">
+                        <h4 class="text-7xl md:text-8xl leading-[0.8] font-light">Corte.<br>Barba.<br><span class="italic font-bold">Ritual.</span></h4>
+                        <div class="space-y-6">
+                            <p class="text-xs uppercase-spaced text-gray-400">Desde 2012</p>
+                            <a href="#" class="uppercase-spaced font-bold border-b-2 border-black pb-2 inline-block">Reservar Cita VIP</a>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1600" alt="Barber Concept" class="w-full h-[60vh] object-cover hover:scale-105 transition-transform duration-1000">
+                    </div>
+                </div>
+                <div class="absolute top-0 right-0 p-20 text-9xl font-black text-black/[0.02] pointer-events-none">CONCEPT</div>
+            </div>
+
+            <p class="reveal mt-16 text-xs uppercase-spaced text-gray-400 font-bold text-center max-w-lg mx-auto leading-loose">
+                Esta demo visual utiliza jerarquía tipográfica disruptiva y uso estratégico de espacios negativos para evocar exclusividad.
+            </p>
+        </div>
+    </section>
+
+    <section class="bg-black px-6 text-center text-white relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <p class="reveal uppercase-spaced mb-8 text-gray-500 font-bold">Inicie la Transformación</p>
+            <h2 class="reveal text-6xl md:text-8xl leading-none mb-20 tracking-tighter">¿Su negocio está listo para<br><span class="italic font-light">el siguiente nivel?</span></h2>
+
+            <a href="https://wa.me/TU_NUMERO_AQUI?text=Hola,%20solicito%20información%20sobre%20el%20diseño%20de%20autor."
+               class="reveal btn-luxury-outline scale-110 hover:scale-100 transition-transform">
                 Solicitar Consultoría Privada
             </a>
-            
-            <p class="mt-10 uppercase-spaced text-xs text-gray-400">Disponibilidad Limitada por Mes</p>
+
+            <p class="reveal mt-16 uppercase-spaced text-[10px] text-gray-600 font-black tracking-[0.6em]">Cupos Limitados por Trimestre</p>
         </div>
+        <div class="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gray-800 to-transparent"></div>
     </section>
 
-    <footer class="py-12 bg-white px-6 border-t border-gray-100">
-        <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-gray-400">
-            <div class="uppercase-spaced text-xs font-semibold text-black">
-                ESTUDIO / DEMO &copy; 2026
+    <footer class="py-16 bg-white px-6">
+        <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+            <div class="uppercase-spaced font-black text-sm">
+                ESTUDIO / <span class="font-light">DEMO</span> &copy; 2026
             </div>
-            <div class="flex gap-8 uppercase-spaced text-xs">
-                <span>Instagram</span>
-                <span>LinkedIn</span>
-                <span>Aviso Legal</span>
+            <div class="flex gap-12 uppercase-spaced font-bold text-[10px]">
+                <a href="#" class="hover:opacity-40 transition">Instagram</a>
+                <a href="#" class="hover:opacity-40 transition">LinkedIn</a>
+                <a href="#" class="hover:opacity-40 transition">Behance</a>
             </div>
         </div>
     </footer>
 
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Header Animations
+        gsap.to(".reveal", {
+            opacity: 1,
+            y: 0,
+            duration: 1.5,
+            stagger: 0.2,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: "body",
+                start: "top 80%",
+            }
+        });
+
+        // Universal Scroll Reveal
+        const reveals = gsap.utils.toArray('.reveal');
+        reveals.forEach(el => {
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 1,
+                y: 0,
+                duration: 1.5,
+                ease: "expo.out"
+            });
+        });
+
+        // Parallax Effect
+        gsap.to(".img-parallax", {
+            yPercent: 30,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".img-parallax",
+                scrub: true
+            }
+        });
+
+        // Nav Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-4', 'shadow-sm');
+                nav.classList.remove('py-6');
+            } else {
+                nav.classList.add('py-6');
+                nav.classList.remove('py-4', 'shadow-sm');
+            }
+        });
+    </script>
 </body>
 </html>
 
